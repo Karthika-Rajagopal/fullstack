@@ -33,22 +33,22 @@ var posts = []models.Post{
 
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}).Error
+	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}).Error //DropTableIfExists() method is called on the db object to drop any existing tables that have the same names as models.Post and models.User
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.Debug().AutoMigrate(&models.User{}, &models.Post{}).Error
+	err = db.Debug().AutoMigrate(&models.User{}, &models.Post{}).Error //AutoMigrate() method is called on the db object to create the models.Post and models.User tables in the database and apply any necessary database schema changes
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
 
-	err = db.Debug().Model(&models.Post{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error
+	err = db.Debug().Model(&models.Post{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error //AddForeignKey() method is called on the db object to create a foreign key constraint between the author_id column in the models.Post table and the id column in the models.User table.
 	if err != nil {
 		log.Fatalf("attaching foreign key error: %v", err)
 	}
 
 	for i, _ := range users {
-		err = db.Debug().Model(&models.User{}).Create(&users[i]).Error
+		err = db.Debug().Model(&models.User{}).Create(&users[i]).Error//executed that seeds the models.User and models.Post tables with sample data
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)
 		}
