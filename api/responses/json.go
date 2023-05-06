@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
+func JSON(w http.ResponseWriter, statusCode int, data interface{}) { //sets the status code of the response by calling w.WriteHeader(statusCode). It then encodes the data parameter as JSON using json.NewEncoder(w).Encode(data) and writes the encoded data to the response
 	w.WriteHeader(statusCode)
 	err := json.NewEncoder(w).Encode(data)
 	if err != nil {
